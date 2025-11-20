@@ -19,13 +19,13 @@ export const consultHanzo = async (userMessage: string): Promise<string> => {
       config: {
         systemInstruction: HANZO_SYSTEM_INSTRUCTION,
         temperature: 0.8, // A bit of creativity
-        maxOutputTokens: 150,
+        maxOutputTokens: 500
       }
     });
-    
+
     return response.text || "The steel is silent. I have no words.";
   } catch (error) {
-    console.error("Hanzo is meditating (Error):", error);
-    return "My silence is my answer. (Connection Error)";
+    console.error("❌ Hanzo is meditating (Error):", error);
+    return `My silence is my answer. (Error: ${error instanceof Error ? error.message : 'Unknown'})`;
   }
 };
