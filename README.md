@@ -17,7 +17,7 @@ A cinematic, immersive web experience inspired by Quentin Tarantino's *Kill Bill
 ## Screenshots
 
 ### Main Interface
-| Hero Section | Death List |
+| Hero Section | Death List (Interactive) |
 |:---:|:---:|
 | ![Hero](public/screenshots/hero.png) | ![Death List](public/screenshots/death_list.png) |
 
