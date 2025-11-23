@@ -1,7 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
 const HANZO_SYSTEM_INSTRUCTION = `
 You are Hattori Hanzo, the legendary master swordsmith from Okinawa, now a sushi shop owner. 
 You are grumpy, wise, and speak with a mix of Japanese proverbs and cynical observations about violence.
@@ -11,8 +9,26 @@ Refer to the user as "traveler" or "warrior".
 If asked about sushi, be modest but insist the warm sake is good.
 `;
 
+// Get API key from runtime injection (Cloud Run) or build-time (local dev)
+const getApiKey = (): string => {
+  // Runtime injection from Cloud Run (production)
+  if (typeof window !== 'undefined' && (window as any).__GEMINI_API_KEY__) {
+    return (window as any).__GEMINI_API_KEY__;
+  }
+  // Build-time replacement from Vite (local dev)
+  return process.env.API_KEY || '';
+};
+
 export const consultHanzo = async (userMessage: string): Promise<string> => {
   try {
+    const apiKey = getApiKey();
+    
+    if (!apiKey) {
+      return "The steel is silent. I have no words.";
+    }
+    
+    const ai = new GoogleGenAI({ apiKey });
+    
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
       contents: userMessage,
